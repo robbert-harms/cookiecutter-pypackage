@@ -14,7 +14,7 @@
 
 {{ cookiecutter.project_short_description}}
 
-* Free software: BSD license
+* Free software: LGPL v3 license
 * Documentation: https://{{ cookiecutter.repo_name }}.readthedocs.org.
 
 Features

@@ -11,7 +11,8 @@ help:
 	@echo "coverage - check code coverage quickly with the default Python"
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
 	@echo "release - package and upload a release"
-	@echo "dist - package"
+	@echo "dist - create the package"
+	@echo "install - installs the package using pip"
 
 clean: clean-build clean-pyc clean-test
 
@@ -62,3 +63,6 @@ dist: clean
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
+
+install: dist
+	pip install --upgrade dist/{{ cookiecutter.repo_name }}-*.tar.gz

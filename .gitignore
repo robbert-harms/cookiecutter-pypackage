@@ -25,6 +25,7 @@ pip-log.txt
 .coverage
 .tox
 nosetests.xml
+htmlcov
 
 # Translations
 *.mo
@@ -41,6 +42,5 @@ output/*/index.html
 # Sphinx
 docs/_build
 
-# Cookiecutter
-output/
-boilerplate/
+# Configuration files
+config
