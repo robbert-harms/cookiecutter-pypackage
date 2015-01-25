@@ -6,17 +6,17 @@
 # Packages
 *.egg
 *.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
+/dist
+/build
+/eggs
+/parts
+/bin
+/var
+/sdist
+/develop-eggs
+/lib
+/lib64
 .installed.cfg
-lib
-lib64
 
 # Installer logs
 pip-log.txt
@@ -42,8 +42,8 @@ output/*/index.html
 # Sphinx
 docs/_build
 
-# Configuration files
-config
+#Idea
+.idea
 
 #Miscellaneous
 /misc
