@@ -1,7 +1,7 @@
 .PHONY: clean-pyc clean-build docs clean
 
 help:
-	@echo "clean - remove all build, test, coverage and Python artifacts"
+	@echo "clean - remove all build, test, coverage and Python artifacts (no uninstall)"
 	@echo "clean-build - remove build artifacts"
 	@echo "clean-pyc - remove Python file artifacts"
 	@echo "clean-test - remove test and coverage artifacts"
@@ -13,6 +13,7 @@ help:
 	@echo "release - package and upload a release"
 	@echo "dist - create the package"
 	@echo "install - installs the package using pip"
+	@echo "uninstall - uninstalls the package using pip"
 
 clean: clean-build clean-pyc clean-test
 
@@ -66,3 +67,6 @@ dist: clean
 
 install: dist
 	pip install --upgrade --no-deps --force-reinstall dist/{{ cookiecutter.repo_name }}-*.tar.gz
+
+uninstall: 
+	pip uninstall -y {{ cookiecutter.repo_name }}
