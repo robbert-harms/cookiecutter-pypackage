@@ -65,4 +65,5 @@ dist: clean
 	ls -l dist
 
 install: dist
-	pip install --upgrade dist/{{ cookiecutter.repo_name }}-*.tar.gz
+	pip uninstall -y {{ cookiecutter.repo_name }}
+	pip install dist/{{ cookiecutter.repo_name }}-*.tar.gz

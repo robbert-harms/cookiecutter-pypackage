@@ -2,18 +2,13 @@
 # -*- coding: utf-8 -*-
 
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
+from setuptools import setup, find_packages
 
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
-requirements = [
-    # TODO: put package requirements here
-]
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
 
 test_requirements = [
     # TODO: put package test requirements here
@@ -27,11 +22,7 @@ setup(
     author='{{ cookiecutter.full_name }}',
     author_email='{{ cookiecutter.email }}',
     url='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.repo_name }}',
-    packages=[
-        '{{ cookiecutter.repo_name }}',
-    ],
-    package_dir={'{{ cookiecutter.repo_name }}':
-                 '{{ cookiecutter.repo_name }}'},
+    packages=find_packages(),
     include_package_data=True,
     install_requires=requirements,
     license="LGPL v3",
