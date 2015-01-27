@@ -6,9 +6,7 @@ from setuptools import setup, find_packages
 
 readme = open('README.rst').read()
 history = open('HISTORY.rst').read().replace('.. :changelog:', '')
-
-with open('requirements.txt') as f:
-    requirements = f.read().splitlines()
+requirements = open('requirements.txt').read().splitlines()
 
 test_requirements = [
     # TODO: put package test requirements here
