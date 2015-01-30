@@ -1,20 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 from setuptools import setup, find_packages
 
-readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
-requirements = open('requirements.txt').read().splitlines()
+with open('README.rst', 'rt') as f: readme = f.read()
+with open('HISTORY.rst', 'rt') as f: history = f.read().replace('.. :changelog:', '')
+with open('requirements.txt') as f: requirements = f.read().splitlines()
+with open('requirements_tests.txt') as f: requirements_tests = f.read().splitlines()
+with open('{{ cookiecutter.repo_name }}/__init__.py') as f: version_file_contents = f.read()
 
-test_requirements = [
-    # TODO: put package test requirements here
-]
+if requirements[0] == '':
+	requirements = []
+	
+if requirements_tests[0] == '':
+	requirements_tests = []
+
+ver_dic = {}
+exec(compile(version_file_contents, "{{ cookiecutter.repo_name }}/__init__.py", 'exec'), ver_dic)
 
 setup(
     name='{{ cookiecutter.repo_name }}',
-    version='{{ cookiecutter.version }}',
+    version=ver_dic["VERSION"],
     description='{{ cookiecutter.project_short_description }}',
     long_description=readme + '\n\n' + history,
     author='{{ cookiecutter.full_name }}',
@@ -40,5 +46,5 @@ setup(
         'Topic :: Scientific/Engineering'
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=requirements_tests
 )

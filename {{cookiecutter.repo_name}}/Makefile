@@ -1,4 +1,4 @@
-.PHONY: clean-pyc clean-build docs clean
+.PHONY: clean clean-build clean-pyc clean-test lint test tests test-all coverage docs release dist install uninstall
 
 help:
 	@echo "clean - remove all build, test, coverage and Python artifacts (no uninstall)"
@@ -7,6 +7,7 @@ help:
 	@echo "clean-test - remove test and coverage artifacts"
 	@echo "lint - check style with flake8"
 	@echo "test - run tests quickly with the default Python"
+	@echo "tests - synonym for test"
 	@echo "test-all - run tests on every Python version with tox"
 	@echo "coverage - check code coverage quickly with the default Python"
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
@@ -38,6 +39,8 @@ lint:
 
 test:
 	python setup.py test
+
+tests: test
 
 test-all:
 	tox
