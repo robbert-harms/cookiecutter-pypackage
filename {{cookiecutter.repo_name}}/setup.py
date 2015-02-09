@@ -1,19 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 from setuptools import setup, find_packages
+
+def load_requirements(fname):
+    is_comment = re.compile('^\s*(#|--).*').match
+    with open(fname) as fo:
+        return [line.strip() for line in fo if not is_comment(line) and line.strip()]
 
 with open('README.rst', 'rt') as f: readme = f.read()
 with open('HISTORY.rst', 'rt') as f: history = f.read().replace('.. :changelog:', '')
-with open('requirements.txt') as f: requirements = f.read().splitlines()
-with open('requirements_tests.txt') as f: requirements_tests = f.read().splitlines()
 with open('{{ cookiecutter.repo_name }}/__init__.py') as f: version_file_contents = f.read()
 
-if requirements[0] == '':
-	requirements = []
-	
-if requirements_tests[0] == '':
-	requirements_tests = []
+requirements = load_requirements('requirements.txt')
+requirements_tests = load_requirements('requirements_tests.txt')
 
 ver_dic = {}
 exec(compile(version_file_contents, "{{ cookiecutter.repo_name }}/__init__.py", 'exec'), ver_dic)
