@@ -56,7 +56,7 @@ coverage:
 docs:
 	rm -f docs/{{ cookiecutter.repo_name }}.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ {{ cookiecutter.repo_name }}
+	sphinx-apidoc -f -o docs/ {{ cookiecutter.repo_name }}
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	@echo "To view results type: firefox docs/_build/html/index.html &"
