@@ -11,16 +11,16 @@ def load_requirements(fname):
 
 with open("README.rst", "rt") as f: readme = f.read()
 with open("HISTORY.rst", "rt") as f: history = f.read().replace(".. :changelog:", "")
-with open("{{ cookiecutter.repo_name }}/__init__.py") as f: version_file_contents = f.read()
+with open("{{ cookiecutter.package_name }}/__init__.py") as f: version_file_contents = f.read()
 
 requirements = load_requirements("requirements.txt")
 requirements_tests = load_requirements("requirements_tests.txt")
 
 ver_dic = {}
-exec(compile(version_file_contents, "{{ cookiecutter.repo_name }}/__init__.py", "exec"), ver_dic)
+exec(compile(version_file_contents, "{{ cookiecutter.package_name }}/__init__.py", "exec"), ver_dic)
 
 setup(
-    name="{{ cookiecutter.repo_name }}",
+    name="{{ cookiecutter.package_name }}",
     version=ver_dic["VERSION"],
     description="{{ cookiecutter.project_short_description }}",
     long_description=readme + "\n\n" + history,

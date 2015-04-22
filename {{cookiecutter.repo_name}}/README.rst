@@ -2,8 +2,8 @@
 {{ cookiecutter.project_name }}
 ===============================
 
-.. image:: https://badge.fury.io/py/{{ cookiecutter.repo_name }}.png
-    :target: http://badge.fury.io/py/{{ cookiecutter.repo_name }}
+.. image:: https://badge.fury.io/gh/{{ cookiecutter.github_username }}%2F{{ cookiecutter.repo_name }}.svg
+    :target: http://badge.fury.io/gh/{{ cookiecutter.github_username }}%2F{{ cookiecutter.repo_name }}
 
 .. image:: https://travis-ci.org/{{ cookiecutter.github_username }}/{{ cookiecutter.repo_name }}.svg?branch=master
         :target: https://travis-ci.org/{{ cookiecutter.github_username }}/{{ cookiecutter.repo_name }}

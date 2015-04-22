@@ -37,7 +37,7 @@ clean-test:
 	rm -fr htmlcov/
 
 lint:
-	flake8 {{ cookiecutter.repo_name }} tests
+	flake8 {{ cookiecutter.package_name }} tests
 
 test:
 	python setup.py test
@@ -48,15 +48,15 @@ test-all:
 	tox
 
 coverage:
-	coverage run --source {{ cookiecutter.repo_name }} setup.py test
+	coverage run --source {{ cookiecutter.package_name }} setup.py test
 	coverage report -m
 	coverage html
 	@echo "To view results type: htmlcov/index.html &"
 
 docs:
-	rm -f docs/{{ cookiecutter.repo_name }}.rst
+	rm -f docs/{{ cookiecutter.package_name }}.rst
 	rm -f docs/modules.rst
-	sphinx-apidoc -f -o docs/ {{ cookiecutter.repo_name }}
+	sphinx-apidoc -f -o docs/ {{ cookiecutter.package_name }}
 	$(MAKE) -C docs clean
 	$(MAKE) -C docs html
 	@echo "To view results type: firefox docs/_build/html/index.html &"
@@ -71,7 +71,7 @@ dist: clean
 	ls -l dist
 
 install: dist
-	pip install --upgrade --no-deps --force-reinstall dist/{{ cookiecutter.repo_name }}-*.tar.gz
+	pip install --upgrade --no-deps --force-reinstall dist/{{ cookiecutter.package_name }}-*.tar.gz
 
 uninstall: 
-	pip uninstall -y {{ cookiecutter.repo_name }}
+	pip uninstall -y {{ cookiecutter.package_name }}
