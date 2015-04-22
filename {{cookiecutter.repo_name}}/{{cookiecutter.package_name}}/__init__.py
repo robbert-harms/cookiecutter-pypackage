@@ -7,7 +7,6 @@ __license__ = "LGPL v3"
 __maintainer__ = "{{ cookiecutter.full_name }}"
 
 VERSION = '{{ cookiecutter.version }}'
-VERSION_NUMBER_PARTS = ()
 VERSION_STATUS = ''
 
 _items = VERSION.split('-')                                           
