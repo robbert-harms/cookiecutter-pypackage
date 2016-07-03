@@ -1,1 +1,9 @@
-.. include:: ../HISTORY.rst
+.. :changelog:
+
+History
+-------
+
+{{ cookiecutter.version }} ({{ cookiecutter.release_date }})
+---------------------
+
+* First release on PyPI.

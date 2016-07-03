@@ -11,6 +11,7 @@
 .. image:: https://pypip.in/v/{{ cookiecutter.repo_name }}/badge.png
         :target: https://pypi.python.org/pypi/{{ cookiecutter.repo_name }}
 
+------------
 
 {{ cookiecutter.project_short_description}}
 
