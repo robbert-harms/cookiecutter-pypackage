@@ -112,10 +112,10 @@ class PrepareDebianDist(Command):
         with open('./debian/copyright', 'r') as file:
             copyright_info = file.read()
 
-        copyright_info = copyright_info.replace('{{source}}', info_dict['url'])
-        copyright_info = copyright_info.replace('{{years}}', '2016-2017')
-        copyright_info = copyright_info.replace('{{author}}', info_dict['author'])
-        copyright_info = copyright_info.replace('{{email}}', info_dict['author_email'])
+        copyright_info = copyright_info.replace('{{ "{{" }}source{{ "}}" }}', info_dict['url'])
+        copyright_info = copyright_info.replace('{{ "{{" }}years{{ "}}" }}', '2016-2017')
+        copyright_info = copyright_info.replace('{{ "{{" }}author{{ "}}" }}', info_dict['author'])
+        copyright_info = copyright_info.replace('{{ "{{" }}email{{ "}}" }}', info_dict['author_email'])
 
         with open('./debian/copyright', 'w') as file:
             file.write(copyright_info)
