@@ -10,13 +10,13 @@
 /build
 /eggs
 /parts
-/bin
 /var
 /sdist
 /develop-eggs
 /lib
 /lib64
 .installed.cfg
+/.pybuild
 
 # Installer logs
 pip-log.txt
@@ -47,3 +47,12 @@ docs/_build
 
 #Miscellaneous
 /misc
+
+# debian tmps
+/debian/source
+/debian/tmp
+/debian/changelog
+/debian/compat
+/debian/control
+/debian/rules
+/debian/watch

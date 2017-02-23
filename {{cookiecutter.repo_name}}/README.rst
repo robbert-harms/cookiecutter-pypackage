@@ -1,24 +1,27 @@
-===============================
+############################
 {{ cookiecutter.project_name }}
-===============================
-
-.. image:: https://badge.fury.io/gh/{{ cookiecutter.github_username }}%2F{{ cookiecutter.repo_name }}.svg
-    :target: http://badge.fury.io/gh/{{ cookiecutter.github_username }}%2F{{ cookiecutter.repo_name }}
-
-.. image:: https://travis-ci.org/{{ cookiecutter.github_username }}/{{ cookiecutter.repo_name }}.svg?branch=master
-        :target: https://travis-ci.org/{{ cookiecutter.github_username }}/{{ cookiecutter.repo_name }}
-
-.. image:: https://pypip.in/v/{{ cookiecutter.repo_name }}/badge.png
-        :target: https://pypi.python.org/pypi/{{ cookiecutter.repo_name }}
-
-------------
+############################
 
 {{ cookiecutter.project_short_description}}
 
+
+*******
+Summary
+*******
 * Free software: LGPL v3 license
-* Documentation: https://{{ cookiecutter.repo_name }}.readthedocs.org.
+* Full documentation: https://{{ cookiecutter.repo_name }}.readthedocs.io
+* Project home: https://github.com/cbclab/{{ cookiecutter.package_name }}
 
-Features
---------
 
-* TODO
+************************
+Quick installation guide
+************************
+
+
+**Linux**
+
+
+**Windows**
+
+
+**Mac**

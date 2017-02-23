@@ -15,6 +15,103 @@
 
 import sys
 import os
+from datetime import datetime
+from functools import wraps
+from unittest.mock import MagicMock
+import builtins
+import glob
+import re
+from textwrap import dedent
+
+
+mock_as_class = ['QWidget', 'QMainWindow', 'QDialog', 'QObject']
+mock_as_decorator = ['pyqtSlot']
+mock_modules = ['pyopencl', 'PyQt5', 'matplotlib', 'mpl_toolkits']
+
+
+def mock_decorator(*args, **kwargs):
+    """Mocked decorator, needed in the case we need to mock a decorator"""
+    def _called_decorator(dec_func):
+        @wraps(dec_func)
+        def _decorator(*args, **kwargs):
+            return dec_func()
+        return _decorator
+    return _called_decorator
+
+
+class MockClass(object):
+    """Mocked class needed in the case we need to mock a class type"""
+    @classmethod
+    def __getattr__(cls, name):
+        return MockModule()
+
+
+class MockNamedComponent(MagicMock):
+    """Some of the loaded components require the __name__ property to be set, this mock class makes that so."""
+    @classmethod
+    def __name__(cls):
+        return MagicMock()
+
+
+class MockModule(MagicMock):
+    """The base mocking class. This mimics a module."""
+    @classmethod
+    def __getattr__(cls, name):
+        if name in mock_as_class:
+            return MockClass
+        if name in mock_as_decorator:
+            return mock_decorator
+        return MockNamedComponent()
+
+
+orig_import = __import__
+
+
+def import_mock(name, *args, **kwargs):
+    """Mock all modules starting with one of the mock_modules names."""
+    if any(name.startswith(s) for s in mock_modules):
+        return MockModule()
+    return orig_import(name, *args, **kwargs)
+
+builtins.__import__ = import_mock
+
+
+def get_cli_doc_items():
+    items = []
+
+    for file in sorted(glob.glob('../mdt/cli_scripts/*.py')):
+        module_name = os.path.splitext(os.path.basename(file))[0]
+        command_name = module_name.replace('_', '-')
+
+        def get_command_class_name():
+            with open(file) as f:
+                match = re.search(r'class (\w*)\(', f.read())
+                if match:
+                    return match.group(1)
+                return None
+
+        command_class_name = get_command_class_name()
+
+        if command_class_name is not None:
+            item = dedent("""
+                .. _cli_index_{command_name}:
+
+                {command_name}
+                {command_name_highlight}
+
+                .. argparse::
+                   :ref: mdt.cli_scripts.{module_name}.get_doc_arg_parser
+                   :prog: {command_name}
+            """).format(command_name=command_name, command_name_highlight='='*len(command_name),
+                        module_name=module_name)
+
+            items.append(item)
+    return items
+
+with open('auto_gen_cli_index.rst', 'w') as f:
+    for item in get_cli_doc_items():
+        f.write(item[1:] + '\n\n\n')
+
 
 # If extensions (or modules to document with autodoc) are in another
 # directory, add these directories to sys.path here. If the directory is
@@ -24,7 +121,7 @@ import os
 
 # Building from inside the docs/ directory?
 if os.path.basename(os.getcwd()) == 'docs':
-	sys.path.insert(1, os.path.abspath(os.path.join('..')))
+    sys.path.insert(1, os.path.abspath(os.path.join('..')))
 
 import {{ cookiecutter.package_name }}
 
@@ -35,7 +132,8 @@ import {{ cookiecutter.package_name }}
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon', 'sphinx.ext.intersphinx',
+              'sphinx.ext.mathjax', 'sphinxarg.ext']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -51,7 +149,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'{{ cookiecutter.project_name }}'
-copyright = u'{{ cookiecutter.year }}, {{ cookiecutter.full_name }}'
+year = datetime.now().year
+copyright = u'%d {{ cookiecutter.full_name }}' % year
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -81,7 +180,7 @@ exclude_patterns = ['_build']
 #default_role = None
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
-#add_function_parentheses = True
+add_function_parentheses = True
 
 # If true, the current module name will be prepended to all description
 # unit titles (such as .. function::).
@@ -95,23 +194,36 @@ exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
-#modindex_common_prefix = []
+modindex_common_prefix = ['{{ cookiecutter.package_name }}.']
 
 # If true, keep warnings as "system message" paragraphs in the built
 # documents.
 #keep_warnings = False
+
+# map to other projects
+#intersphinx_mapping = {
+#    'mot': ('http://mot.readthedocs.io/en/latest/', None),
+#}
 
 
 # -- Options for HTML output -------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    'show_powered_by': False,
+    'description': "Toolbox",
+    'logo_name': True,
+    'sidebar_collapse': False,
+    'fixed_sidebar': False,
+    'extra_nav_links': {'Module index': 'py-modindex.html'}
+}
+
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -164,11 +276,11 @@ html_static_path = ['_static']
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer.
 # Default is True.
-#html_show_sphinx = True
+html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer.
 # Default is True.
@@ -190,13 +302,14 @@ htmlhelp_basename = '{{ cookiecutter.package_name }}doc'
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #'papersize': 'letterpaper',
+    'papersize': 'a4paper',
 
     # The font size ('10pt', '11pt' or '12pt').
-    #'pointsize': '10pt',
+    'pointsize': '10pt',
 
     # Additional stuff for the LaTeX preamble.
-    #'preamble': '',
+    'preamble': """
+    """,
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -268,7 +381,6 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
-
 
 # -- Options for napoleon ----
 autoclass_content = 'both'
