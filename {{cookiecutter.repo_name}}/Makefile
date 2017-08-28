@@ -6,7 +6,7 @@ PROJECT_NAME={{ cookiecutter.package_name }}
 PROJECT_VERSION=$$($(PYTHON) setup.py --version)
 GPG_SIGN_KEY=0E1AA560
 UBUNTU_MAIN_TARGET_DISTRIBUTIONS=xenial
-UBUNTU_OTHER_TARGET_DISTRIBUTIONS=yakkety
+UBUNTU_OTHER_TARGET_DISTRIBUTIONS=zesty
 
 
 help:
@@ -22,6 +22,7 @@ help:
 	@echo "docs - generate Sphinx HTML documentation, including API docs"
 	@echo "docs-pdf - generate the PDF documentation, including API docs"
 	@echo "docs-man - generate the linux manpages"
+	@echo "docs-changelog - generate the changelog documentation"
 	@echo "release - package and upload a release"
 	@echo "dist - create a pip package"
 	@echo "dist-ubuntu - create an Ubuntu package"
@@ -90,9 +91,11 @@ docs-man:
 	$(MAKE) -C docs man SPHINXBUILD='python3 $(shell which sphinx-build)'
 	@echo "To view results use something like: man docs/_build/man/{{ cookiecutter.package_name }}.1 &"
 
+docs-changelog:
+	gitchangelog > CHANGELOG.rst
 
 # todo: add GitHub Releases API hook here
-release: clean release-ubuntu-ppa release-pip
+release: clean release-ubuntu-ppa release-pip release-github
 
 release-pip:
 	$(PYTHON) setup.py sdist upload
@@ -103,6 +106,12 @@ release-ubuntu-ppa: dist-ubuntu
 	for ubuntu_version in $(UBUNTU_OTHER_TARGET_DISTRIBUTIONS) ; do \
 		dput ppa:robbert-harms/cbclab dist/$(PROJECT_NAME)_$(PROJECT_VERSION)-1~$${ubuntu_version}1_source.changes ; \
 	done
+
+release-github:
+	git push . master:latest_release
+	git tag -a v$(PROJECT_VERSION) -m "Version $(PROJECT_VERSION)"
+	git push origin latest_release
+	git push origin --tags
 
 dist: clean
 	$(PYTHON) setup.py sdist
