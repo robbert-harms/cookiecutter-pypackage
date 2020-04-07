@@ -1,4 +1,4 @@
-
+{% raw %}
 {{#versions}}
 {{{label}}}
 {{#label_chars}}={{/label_chars}}
@@ -16,4 +16,4 @@
 {{/commits}}
 {{/sections}}
 {{/versions}}
-
+{% endraw %}
