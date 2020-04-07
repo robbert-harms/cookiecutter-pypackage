@@ -10,7 +10,7 @@ Summary
 *******
 * Free software: LGPL v3 license
 * Full documentation: https://{{ cookiecutter.repo_name }}.readthedocs.io
-* Project home: https://github.com/cbclab/{{ cookiecutter.package_name }}
+* Project home: https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.package_name }}
 
 
 ************************
